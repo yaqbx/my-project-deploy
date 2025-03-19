@@ -42,6 +42,26 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build #--stacktrace --info --debug
 
+    - name: Build and Push docker Image
+      uses: docker/login-action@v3
+      with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          # usally normal steps would be required but we can use github actions
+          # | docker login
+          # docker build
+          # docker tag
+          # docker push
+    - name: Setu up Docker Buildx
+      uses: docker/steup-buildx-action@v1
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: yaqbx/demo-app
+
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
@@ -53,19 +73,19 @@ jobs:
     # - name: Build with Gradle 8.9
     #   run: gradle build
 
-  dependency-submission:
+ # dependency-submission:
 
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+ #   runs-on: ubuntu-latest
+ #   permissions:
+ #     contents: write
 
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 11
-      uses: actions/setup-java@v4
-      with:
-        java-version: '11'
-        distribution: 'adopt'
+ #   steps:
+ #   - uses: actions/checkout@v4
+ #   - name: Set up JDK 11
+ #     uses: actions/setup-java@v4
+ #     with:
+ #       java-version: '11'
+ #       distribution: 'adopt'
 
     # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
     # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
