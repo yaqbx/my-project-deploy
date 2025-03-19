@@ -53,10 +53,10 @@ jobs:
           # docker tag
           # docker push
     - name: Setu up Docker Buildx
-      uses: docker/steup-buildx-action@v1
+      uses: docker/steup-buildx-action@v3
     
     - name: Build and push Docker image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v6
       with:
         context: .
         push: true
