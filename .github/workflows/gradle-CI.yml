@@ -30,11 +30,14 @@ jobs:
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
-
+        
+      - name: Step "Check what is in the directories"
+        run: ls -ltr ./build/libs/*
+        
       - name: Verify JAR file
         run: |
           ls -l ./build/libs/
-          if [ ! -f "./build/libs/my-app-1.0-SNAPSHOT.jar" ]; then
+          if [ ! -f "./build/libs/java-app-1.0-SNAPSHOT.jar" ]; then
             echo "JAR file not found!"
             exit 1
           fi
